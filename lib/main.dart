@@ -32,6 +32,36 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String _expression = '';
   String _result = '';
 
+  // Function to handle square
+  void _square() {
+    setState(() {
+      try {
+        final Expression expression = Expression.parse(_expression);
+        final evaluator = const ExpressionEvaluator();
+        final evalResult = evaluator.eval(expression, {});
+        _result = (evalResult * evalResult).toString();
+        _display = '$_expression² = $_result';
+      } catch (e) {
+        _display = 'Error';
+      }
+    });
+  }
+
+  // Function to handle modulo
+  void _modulo() {
+    setState(() {
+      try {
+        final Expression expression = Expression.parse(_expression);
+        final evaluator = const ExpressionEvaluator();
+        final evalResult = evaluator.eval(expression, {});
+        _result = (evalResult % 1).toString();
+        _display = '$_expression % 1 = $_result';
+      } catch (e) {
+        _display = 'Error';
+      }
+    });
+  }
+
   void _onPressed(String value) {
     setState(() {
       if (value == 'C') {
@@ -48,6 +78,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         } catch (e) {
           _display = 'Error';
         }
+      } else if (value == 'x²') {
+        _square();
+      } else if (value == '%') {
+        _modulo();
       } else {
         _expression += value;
         _display += value;
@@ -59,7 +93,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Name\'s Calculator'),
+        title: const Text('Mason\'s Calculator'),
       ),
       body: Column(
         children: [
@@ -79,8 +113,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             flex: 5,
             child: Column(
               children: [
-                _buildButtonRow(['7', '8', '9', '/']),
-                _buildButtonRow(['4', '5', '6', '*']),
+                _buildButtonRow(['7', '8', '9', '/', 'x²']),
+                _buildButtonRow(['4', '5', '6', '*', '%']),
                 _buildButtonRow(['1', '2', '3', '-']),
                 _buildButtonRow(['C', '0', '=', '+']),
               ],
